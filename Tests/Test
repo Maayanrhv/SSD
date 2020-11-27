@@ -1,0 +1,91 @@
+import numpy as np
+import IMUtosound
+import RTdata as rt
+import math
+from scipy.optimize import fsolve
+import pyaudioexclusive
+
+mat = [[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12]]
+subMat = [sub[1:3] for sub in mat[0:2]]
+
+print(mat[1:3])  # take rows 1 and 2
+
+files_num =  [0, 1, 2]
+lengths = [3, 5, 2]
+
+my_list = [[fn]*l for fn,l in zip(files_num, lengths)]
+flat_list = [item for sublist in my_list for item in sublist]  # flatten the list
+
+
+# x = np.arange(-130, 130, 1)
+# currentData = rt.RTdata(0)
+# IMUtosound.vec_to_freq_function(500)
+# currentData.set_data(10, 0, 0)
+# for value in x:
+#     currentData.set_data(value, 0, 0)
+#     # a = IMUtosound.vel_to_vol(value)
+
+# def fun1(x):
+#    return x**2+2
+#
+# def fun2(x):
+#    return x+4
+#
+# def findIntersections(fun1, fun2, x0):
+#     xs = fsolve(lambda x: fun1(x) - fun2(x), x0)
+#     intersectionPoints = [[0, 0], [0, 0]]
+#     for i, x in enumerate(xs):
+#         x = round(x)
+#         xs[i] = x
+#         y=round(fun1(x))
+#         intersectionPoints[i][0] = x
+#         intersectionPoints[i][1] = y
+#
+#     return intersectionPoints
+#
+# intersections = findIntersections(fun1, fun2, [0, 1])
+
+global roll_vel
+global high,low
+global a, b, shift, y0, yf,x0,xf, base, shift
+
+def values():
+    global high, low
+    global a, b, shift, y0, yf, x0, xf, base, shift
+    high = 554.3522
+    low = 103.8262
+    base = 10
+    yf = high
+    y0 = low
+    x0 = -150
+    xf = 150
+    shift = 440
+    a = (yf - y0) / (math.log(((xf + shift) / (x0 + shift)), base))
+    b = yf - a * math.log(xf + shift, 10)
+
+
+def freqFunction(x):
+   return a * math.log(x + shift, base) + b
+
+# Calculate the logarithmic inverse function.
+# Given the logarithmic function: f(x) = a * log(x + shifter) + b
+# the matching inverse function is: f(x) = base^((x-b)/a) - shifter
+# x represents velocity
+def inverseFreqFunction(x):
+   return base**((x-b)/a) - shift
+
+def findIntersections(fun1, fun2, x0):
+    xs = fsolve(lambda x: fun1(x) - fun2(x), x0)
+    intersectionPoints = [[0, 0], [0, 0]]
+    for i, x in enumerate(xs):
+        x = round(x)
+        xs[i] = x
+        y=round(fun1(x))
+        intersectionPoints[i][0] = x
+        intersectionPoints[i][1] = y
+
+    return intersectionPoints
+
+values()
+intersections = findIntersections(freqFunction, inverseFreqFunction, [0, 1])
+print(intersections)
