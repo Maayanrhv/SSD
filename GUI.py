@@ -120,6 +120,42 @@ class Window(QWidget):
         self.vertical_dist_err_input.setMaximumWidth(40)
         # self.stray_dist_err_input.setText("Vertical Distance From Original Line")
 
+        # Error 1 backwards - Diagonal distance fill-in label
+        self.back_diagonal_dist_label = QLabel(self.win)
+        self.back_diagonal_dist_label.move(160, 220)
+        self.back_diagonal_dist_label.setText("Backwards Diagonal Distance:")
+
+        # Error 1 backwards - Diagonal distance fill-in double value
+        self.back_diagonal_dist_err_input = QLineEdit(self.win)
+        self.back_diagonal_dist_err_input.setValidator(QtGui.QDoubleValidator(0.99, 99.99, 2))
+        self.back_diagonal_dist_err_input.move(160, 235)
+        self.back_diagonal_dist_err_input.setMaximumWidth(40)
+        # self.remain_dist_err_input.setText("Backwards Distance of Diagonal Line")
+
+        # Error 2 backwards - Horizontal distance fill-in label
+        self.back_horizontal_dist_label = QLabel(self.win)
+        self.back_horizontal_dist_label.move(160, 260)
+        self.back_horizontal_dist_label.setText("Backwards Horizontal Distance:")
+
+        # Error 2 backwards - Horizontal distance fill-in double value
+        self.back_horizontal_dist_err_input = QLineEdit(self.win)
+        self.back_horizontal_dist_err_input.setValidator(QtGui.QDoubleValidator(0.99, 99.99, 2))
+        self.back_horizontal_dist_err_input.move(160, 275)
+        self.back_horizontal_dist_err_input.setMaximumWidth(40)
+        # self.stray_dist_err_input.setText("Backwards Horizontal Distance From Original Line")
+
+        # Error 3 backwards - Vertical distance fill-in label
+        self.back_vertical_dist_label = QLabel(self.win)
+        self.back_vertical_dist_label.move(160, 300)
+        self.back_vertical_dist_label.setText("Backwards Vertical Distance:")
+
+        # Error 3 backwards - Vertical distance fill-in double value
+        self.back_vertical_dist_err_input = QLineEdit(self.win)
+        self.back_vertical_dist_err_input.setValidator(QtGui.QDoubleValidator(0.99, 99.99, 2))
+        self.back_vertical_dist_err_input.move(160, 315)
+        self.back_vertical_dist_err_input.setMaximumWidth(40)
+        # self.stray_dist_err_input.setText("Backwards Vertical Distance From Original Line")
+
         # Distance error Button
         self.dist_err_B = QPushButton(self.win)
         self.dist_err_B.setText("Insert Errors")
@@ -128,9 +164,9 @@ class Window(QWidget):
 
         # Trials List Status
         self.trialListStatus = QPlainTextEdit(self.win)
-        self.trialListStatus.move(200, 20)
+        self.trialListStatus.move(320, 20)
         self.trialListStatus.setFixedHeight(400)
-        self.trialListStatus.setFixedWidth(350)
+        self.trialListStatus.setFixedWidth(300)
         self.trialListStatus.setReadOnly(True)
 
         self.win.show()
@@ -149,10 +185,16 @@ class Window(QWidget):
     def insert_error_clicked(self):
         DistanceErrorFile.set_distance_errors(self.diagonal_dist_err_input.text(),
                                               self.horizontal_dist_err_input.text(),
-                                              self.vertical_dist_err_input.text())
+                                              self.vertical_dist_err_input.text(),
+                                              self.back_diagonal_dist_err_input.text(),
+                                              self.back_horizontal_dist_err_input.text(),
+                                              self.back_vertical_dist_err_input.text())
         self.diagonal_dist_err_input.clear()
         self.horizontal_dist_err_input.clear()
         self.vertical_dist_err_input.clear()
+        self.back_diagonal_dist_err_input.clear()
+        self.back_horizontal_dist_err_input.clear()
+        self.back_vertical_dist_err_input.clear()
 
     # Exiting the app and end the program
     def exit_clicked(self):
