@@ -37,9 +37,9 @@ class Window(QWidget):
         # Show icon
         pic = QLabel(self.win)
         pixmap = QtGui.QPixmap('icon.png')
-        smaller_pixmap = pixmap.scaled(93, 95, Qt.KeepAspectRatio, Qt.FastTransformation)
+        smaller_pixmap = pixmap.scaled(83, 85, Qt.KeepAspectRatio, Qt.FastTransformation)
         pic.setPixmap(smaller_pixmap)
-        pic.move(50, 350)
+        pic.move(50, 400)
         pic.show()
 
         # Start Trial Button
@@ -81,38 +81,50 @@ class Window(QWidget):
         # Exit Button
         self.exitB = QPushButton(self.win)
         self.exitB.setText("Exit")
-        self.exitB.move(50, 330)
+        self.exitB.move(50, 375)
         self.exitB.clicked.connect(self.exit_clicked)
 
-        # Remaining distance error fill-in label
-        self.remaining_dist_label = QLabel(self.win)
-        self.remaining_dist_label.move(50, 220)
-        self.remaining_dist_label.setText("Distance To Horizontal Line:")
+        # Error 1 - Diagonal distance fill-in label
+        self.diagonal_dist_label = QLabel(self.win)
+        self.diagonal_dist_label.move(50, 220)
+        self.diagonal_dist_label.setText("Diagonal Distance:")
 
-        # Remaining distance error fill-in double value
-        self.remain_dist_err_input = QLineEdit(self.win)
-        self.remain_dist_err_input.setValidator(QtGui.QDoubleValidator(0.99, 99.99, 2))
-        self.remain_dist_err_input.move(50, 235)
-        self.remain_dist_err_input.setMaximumWidth(40)
-        # self.remain_dist_err_input.setText("Distance To Horizontal Line")
+        # Error 1 - Diagonal distance fill-in double value
+        self.diagonal_dist_err_input = QLineEdit(self.win)
+        self.diagonal_dist_err_input.setValidator(QtGui.QDoubleValidator(0.99, 99.99, 2))
+        self.diagonal_dist_err_input.move(50, 235)
+        self.diagonal_dist_err_input.setMaximumWidth(40)
+        # self.remain_dist_err_input.setText("Distance of Diagonal Line")
 
-        # Straying distance error fill-in label
-        self.straying_dist_label = QLabel(self.win)
-        self.straying_dist_label.move(50, 260)
-        self.straying_dist_label.setText("Distance From Original Line:")
+        # Error 2 - Horizontal distance fill-in label
+        self.horizontal_dist_label = QLabel(self.win)
+        self.horizontal_dist_label.move(50, 260)
+        self.horizontal_dist_label.setText("Horizontal Distance:")
 
-        # Straying distance error fill-in double value
-        self.stray_dist_err_input = QLineEdit(self.win)
-        self.stray_dist_err_input.setValidator(QtGui.QDoubleValidator(0.99, 99.99, 2))
-        self.stray_dist_err_input.move(50, 275)
-        self.stray_dist_err_input.setMaximumWidth(40)
-        # self.stray_dist_err_input.setText("Distance From Original Line")
+        # Error 2 - Horizontal distance fill-in double value
+        self.horizontal_dist_err_input = QLineEdit(self.win)
+        self.horizontal_dist_err_input.setValidator(QtGui.QDoubleValidator(0.99, 99.99, 2))
+        self.horizontal_dist_err_input.move(50, 275)
+        self.horizontal_dist_err_input.setMaximumWidth(40)
+        # self.stray_dist_err_input.setText("Horizontal Distance From Original Line")
+
+        # Error 3 - Vertical distance fill-in label
+        self.vertical_dist_label = QLabel(self.win)
+        self.vertical_dist_label.move(50, 300)
+        self.vertical_dist_label.setText("Vertical Distance:")
+
+        # Error 3 - Vertical distance fill-in double value
+        self.vertical_dist_err_input = QLineEdit(self.win)
+        self.vertical_dist_err_input.setValidator(QtGui.QDoubleValidator(0.99, 99.99, 2))
+        self.vertical_dist_err_input.move(50, 315)
+        self.vertical_dist_err_input.setMaximumWidth(40)
+        # self.stray_dist_err_input.setText("Vertical Distance From Original Line")
 
         # Distance error Button
-        self.remaining_dist_err_B = QPushButton(self.win)
-        self.remaining_dist_err_B.setText("Insert")
-        self.remaining_dist_err_B.move(50, 300)
-        self.remaining_dist_err_B.clicked.connect(self.insert_error_clicked)
+        self.dist_err_B = QPushButton(self.win)
+        self.dist_err_B.setText("Insert Errors")
+        self.dist_err_B.move(50, 340)
+        self.dist_err_B.clicked.connect(self.insert_error_clicked)
 
         # Trials List Status
         self.trialListStatus = QPlainTextEdit(self.win)
@@ -135,9 +147,12 @@ class Window(QWidget):
 
     # Save the distances errors values of a certain trial
     def insert_error_clicked(self):
-        DistanceErrorFile.set_distance_errors(self.remain_dist_err_input.text(), self.stray_dist_err_input.text())
-        self.stray_dist_err_input.clear()
-        self.remain_dist_err_input.clear()
+        DistanceErrorFile.set_distance_errors(self.diagonal_dist_err_input.text(),
+                                              self.horizontal_dist_err_input.text(),
+                                              self.vertical_dist_err_input.text())
+        self.diagonal_dist_err_input.clear()
+        self.horizontal_dist_err_input.clear()
+        self.vertical_dist_err_input.clear()
 
     # Exiting the app and end the program
     def exit_clicked(self):

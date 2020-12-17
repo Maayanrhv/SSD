@@ -5,32 +5,38 @@ import csv
 
 # Error - The distances errors after the navigational tasks (irrelevant for Balance)
 titled_trials_counter = []  # the trial's serial number - to keep track of the trial that is related to the errors.
-remaining_distance_error = []  # the distance from where the subject stopped to the horizontal end line.
-straying_error = []  # the distance from where the subject stopped to the original straight line.
+diagonal_error = []  # error 1 - the distance from where the subject stopped to the goal point.
+horizontal_error = []  # error 2 - the horizontal distance from where the subject stopped to the straight line.
+vertical_error = []  # error 3 - the vertical distance from where the subject stopped to the straight line.
 
 
 # Accept the errors from GUI and add them to the lists of errors.
-# Input: - remaining_dist_err - the remaining distance error value of a specific trial (double type)
-#        - stray_err - the straying distance error value of a specific trial (double type)
-def set_distance_errors(remaining_dist_err, stray_err):
-    global remaining_distance_error, straying_error
-    remaining_distance_error.append(remaining_dist_err)
-    straying_error.append(stray_err)
+# Input: - diagonal_dist_err - the diagonal distance error value of a specific trial (double type)
+#        - horizontal_err - the horizontal distance error value of a specific trial (double type)
+#        - vertical_err - the vertical distance error value of a specific trial (double type)
+def set_distance_errors(diagonal_dist_err, horizontal_err, vertical_err):
+    global diagonal_error, horizontal_error, vertical_error
+    diagonal_error.append(diagonal_dist_err)
+    horizontal_error.append(horizontal_err)
+    vertical_error.append(vertical_err)
 
 
 # Create a matrix that will be saved as a csv file later on.
 # The matrix will include all the error data we collected and organized in the global lists for each trial.
 def create_mat():
-    titled_trials_counter = list(range(1, len(remaining_distance_error) + 1))
+    titled_trials_counter = list(range(1, len(diagonal_error) + 1))
     titled_trials_counter.insert(0, "Trial Number")
 
-    titled_remaining_distance = remaining_distance_error
-    titled_remaining_distance.insert(0, "Remaining Distance Error")
+    titled_diagonal = diagonal_error
+    titled_diagonal.insert(0, "Error 1 - Diagonal Distance")
 
-    titled_straying = straying_error
-    titled_straying.insert(0, "Straying Distance Error")
+    titled_horizontal = horizontal_error
+    titled_horizontal.insert(0, "Error 2 - Horizontal Distance")
 
-    return [p for p in zip(titled_trials_counter, titled_remaining_distance, titled_straying)]
+    titled_vertical = vertical_error
+    titled_vertical.insert(0, "Error 3 - Vertical Distance")
+
+    return [p for p in zip(titled_trials_counter, titled_diagonal, titled_horizontal, titled_vertical)]
 
 
 # Create a csv file containing the error data organized by trials.

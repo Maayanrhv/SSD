@@ -104,11 +104,13 @@ expMode = ExpMode.Test  # initialized to test mode
 if expMode == ExpMode.Test:
     # updateTrialListRightLeft()  # for Balance Experiment
     numberOfTrialsPerType = 5  # each trial type repeats numberOfTrialsPerType times
-    TrialTypesToRun = [1, 2, 5, 6, 7, 8, 9, 10, 11, 12]  # trial types to run (set to be test trial types, not training)
+    TrialTypesToRun = [5, 6, 7, 8, 9, 10, 11, 12]  # trial types to run (set to be test trial types, not training)
     trialNum = len(TrialTypesToRun) * numberOfTrialsPerType  # total amount of test trials
-    trialsIndexes = np.arange(0, trialNum)  # list of trials' indexes
     trialsRep = np.repeat(TrialTypesToRun, numberOfTrialsPerType)  # duplicate each trial numberOfTrialsPerType times
     np.random.shuffle(trialsRep)  # shuffle the trials randomly
+    trialsRep = np.append(trialsRep, [1, 2])
+    trialNum += 2
+    trialsIndexes = np.arange(0, trialNum)  # list of trials' indexes
 
 # in case of training mode
 elif expMode == ExpMode.Training:
