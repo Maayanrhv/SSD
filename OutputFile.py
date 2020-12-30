@@ -26,7 +26,7 @@ datasetNames = ['fulldataL', 'fulldataR', 'volLeftVec', 'freq_sin', 'timeVec', '
 totalTimeSec = 3600
 # secForFile=20 # 1500 yy
 secForFile = 60  # 1500 yy
-numYY = 50 * secForFile
+numYY = 500 * secForFile
 
 
 class OutputFile:
@@ -187,7 +187,7 @@ class OutputFile:
         # print(counter)
         # outputfile.writeToFile(self, "fulldataL", self.bufferData.fulldataL, counter)
 
-        fileIndex = int(counter / numYY)
+        fileIndex = int(counter / numYY)  # every numYY times, fileIndex increases by 1 (fileIndex range: 0, 1, 2,...)
         fileIndex = "{:02d}_".format(fileIndex)
         fullname = os.path.join(self.filenmameDir, fileIndex + self.filenameHdf2)
         with h5py.File(fullname, "a") as f:

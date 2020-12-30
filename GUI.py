@@ -39,7 +39,7 @@ class Window(QWidget):
         pixmap = QtGui.QPixmap('icon.png')
         smaller_pixmap = pixmap.scaled(83, 85, Qt.KeepAspectRatio, Qt.FastTransformation)
         pic.setPixmap(smaller_pixmap)
-        pic.move(50, 400)
+        pic.move(170, 370)
         pic.show()
 
         # Start Trial Button
@@ -81,7 +81,7 @@ class Window(QWidget):
         # Exit Button
         self.exitB = QPushButton(self.win)
         self.exitB.setText("Exit")
-        self.exitB.move(50, 375)
+        self.exitB.move(50, 400)
         self.exitB.clicked.connect(self.exit_clicked)
 
         # Error 1 - Diagonal distance fill-in label
@@ -91,7 +91,7 @@ class Window(QWidget):
 
         # Error 1 - Diagonal distance fill-in double value
         self.diagonal_dist_err_input = QLineEdit(self.win)
-        self.diagonal_dist_err_input.setValidator(QtGui.QDoubleValidator(0.99, 99.99, 2))
+        self.diagonal_dist_err_input.setValidator(QtGui.QDoubleValidator(0, 9999.99, 2))
         self.diagonal_dist_err_input.move(50, 235)
         self.diagonal_dist_err_input.setMaximumWidth(40)
         # self.remain_dist_err_input.setText("Distance of Diagonal Line")
@@ -103,7 +103,7 @@ class Window(QWidget):
 
         # Error 2 - Horizontal distance fill-in double value
         self.horizontal_dist_err_input = QLineEdit(self.win)
-        self.horizontal_dist_err_input.setValidator(QtGui.QDoubleValidator(0.99, 99.99, 2))
+        self.horizontal_dist_err_input.setValidator(QtGui.QDoubleValidator(-9999.99, 9999.99, 2))
         self.horizontal_dist_err_input.move(50, 275)
         self.horizontal_dist_err_input.setMaximumWidth(40)
         # self.stray_dist_err_input.setText("Horizontal Distance From Original Line")
@@ -115,7 +115,7 @@ class Window(QWidget):
 
         # Error 3 - Vertical distance fill-in double value
         self.vertical_dist_err_input = QLineEdit(self.win)
-        self.vertical_dist_err_input.setValidator(QtGui.QDoubleValidator(0.99, 99.99, 2))
+        self.vertical_dist_err_input.setValidator(QtGui.QDoubleValidator(-9999.99, 9999.99, 2))
         self.vertical_dist_err_input.move(50, 315)
         self.vertical_dist_err_input.setMaximumWidth(40)
         # self.stray_dist_err_input.setText("Vertical Distance From Original Line")
@@ -127,7 +127,7 @@ class Window(QWidget):
 
         # Error 1 backwards - Diagonal distance fill-in double value
         self.back_diagonal_dist_err_input = QLineEdit(self.win)
-        self.back_diagonal_dist_err_input.setValidator(QtGui.QDoubleValidator(0.99, 99.99, 2))
+        self.back_diagonal_dist_err_input.setValidator(QtGui.QDoubleValidator(0, 9999.99, 2))
         self.back_diagonal_dist_err_input.move(160, 235)
         self.back_diagonal_dist_err_input.setMaximumWidth(40)
         # self.remain_dist_err_input.setText("Backwards Distance of Diagonal Line")
@@ -139,7 +139,7 @@ class Window(QWidget):
 
         # Error 2 backwards - Horizontal distance fill-in double value
         self.back_horizontal_dist_err_input = QLineEdit(self.win)
-        self.back_horizontal_dist_err_input.setValidator(QtGui.QDoubleValidator(0.99, 99.99, 2))
+        self.back_horizontal_dist_err_input.setValidator(QtGui.QDoubleValidator(-9999.99, 9999.99, 2))
         self.back_horizontal_dist_err_input.move(160, 275)
         self.back_horizontal_dist_err_input.setMaximumWidth(40)
         # self.stray_dist_err_input.setText("Backwards Horizontal Distance From Original Line")
@@ -151,7 +151,7 @@ class Window(QWidget):
 
         # Error 3 backwards - Vertical distance fill-in double value
         self.back_vertical_dist_err_input = QLineEdit(self.win)
-        self.back_vertical_dist_err_input.setValidator(QtGui.QDoubleValidator(0.99, 99.99, 2))
+        self.back_vertical_dist_err_input.setValidator(QtGui.QDoubleValidator(-9999.99, 9999.99, 2))
         self.back_vertical_dist_err_input.move(160, 315)
         self.back_vertical_dist_err_input.setMaximumWidth(40)
         # self.stray_dist_err_input.setText("Backwards Vertical Distance From Original Line")
@@ -164,8 +164,8 @@ class Window(QWidget):
 
         # Trials List Status
         self.trialListStatus = QPlainTextEdit(self.win)
-        self.trialListStatus.move(320, 20)
-        self.trialListStatus.setFixedHeight(400)
+        self.trialListStatus.move(330, 20)
+        self.trialListStatus.setFixedHeight(460)
         self.trialListStatus.setFixedWidth(300)
         self.trialListStatus.setReadOnly(True)
 

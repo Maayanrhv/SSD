@@ -1,5 +1,0 @@
-"Trial Number","Error 1 - Diagonal Distance","Error 2 - Horizontal Distance","Error 3 - Vertical Distance","Backwards Error 1","Backwards Error 2","Backwards Error 3"
-"1","12","23","34","-","-","-"
-"2","11","22","33","-","-","-"
-"3","13","24","132","-","-","-"
-"4","1","2","3","4","5","6"

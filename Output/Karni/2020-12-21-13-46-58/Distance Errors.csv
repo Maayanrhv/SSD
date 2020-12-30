@@ -1,0 +1,5 @@
+"Trial Number","Error 1 - Diagonal Distance","Error 2 - Horizontal Distance","Error 3 - Vertical Distance","Backwards Error 1","Backwards Error 2","Backwards Error 3"
+"1","80","80","100","900","800","150"
+"2","600","560","250","2450","0","2500"
+"3","600","250","400","3050","0","3050"
+"4","450","380","0","2600","2570","0"

@@ -40,7 +40,9 @@ trialTypes = {
   9: "Homing ECL With Sound B",  # task 2 ECL sound Shape B
   10: "Homing ECL No Sound B",  # task 2 ECL no sound Shape B
   11: "Homing ECL With Sound C",  # task 2 ECL sound Shape C
-  12: "Homing ECL No Sound A",  # task 2 ECL no sound Shape C
+  12: "Homing ECL No Sound C",  # task 2 ECL no sound Shape C
+  13: "Homing ECL With Sound D",  # task 2 ECL sound Shape D
+  14: "Homing ECL No Sound D",  # task 2 ECL no sound Shape D
 }
 
 trialStatus = {
@@ -103,13 +105,18 @@ expMode = ExpMode.Test  # initialized to test mode
 # in case of test mode
 if expMode == ExpMode.Test:
     # updateTrialListRightLeft()  # for Balance Experiment
-    numberOfTrialsPerType = 5  # each trial type repeats numberOfTrialsPerType times
-    TrialTypesToRun = [5, 6, 7, 8, 9, 10, 11, 12]  # trial types to run (set to be test trial types, not training)
-    trialNum = len(TrialTypesToRun) * numberOfTrialsPerType  # total amount of test trials
-    trialsRep = np.repeat(TrialTypesToRun, numberOfTrialsPerType)  # duplicate each trial numberOfTrialsPerType times
+    numberOfTrialsPerType_W = 5  # each trial type repeats numberOfTrialsPerType times (for WiaSL task)
+    TrialTypesToRun_W = [5, 6]  # trial types to run (set to be test trial types, not training)
+    numberOfTrialsPerType_H = 3  # each trial type repeats numberOfTrialsPerType times (for Homing task)
+    TrialTypesToRun_H = [7, 8, 9, 10, 11, 12, 13, 14]  # trial types to run (set to be test trial types, not training)
+
+    # duplicate each trial numberOfTrialsPerType times
+    trialsRep_temp_W = np.repeat(TrialTypesToRun_W, numberOfTrialsPerType_W)
+    trialsRep_temp_H = np.repeat(TrialTypesToRun_H, numberOfTrialsPerType_H)
+    trialsRep = np.append(trialsRep_temp_W, trialsRep_temp_H)
     np.random.shuffle(trialsRep)  # shuffle the trials randomly
     trialsRep = np.append(trialsRep, [1, 2])
-    trialNum += 2
+    trialNum = len(trialsRep)  # total amount of test trials
     trialsIndexes = np.arange(0, trialNum)  # list of trials' indexes
 
 # in case of training mode

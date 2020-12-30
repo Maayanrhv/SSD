@@ -1,0 +1,11 @@
+Index,trialType,trial Number,Dist,trialTypeInd
+1,WiaSL ECL With Sound,10,NULL,5
+2,WiaSL ECL With Sound,14,NULL,5
+3,WiaSL ECL With Sound,21,NULL,5
+4,WiaSL ECL With Sound,24,NULL,5
+5,WiaSL ECL With Sound,26,NULL,5
+1,WiaSL ECL No Sound,4,NULL,6
+2,WiaSL ECL No Sound,5,NULL,6
+3,WiaSL ECL No Sound,15,NULL,6
+4,WiaSL ECL No Sound,23,NULL,6
+5,WiaSL ECL No Sound,28,NULL,6
