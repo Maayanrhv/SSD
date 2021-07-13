@@ -23,6 +23,9 @@ import csv
 #   - self.file_num = [0, 1]
 #   - self.indexes_length_per_file = [200, 100]
 #   - self.indexes_per_file = [[400, 401, 402,..., 598, 599], [0, 1, 2,..., 98, 99]]
+import numpy as np
+
+
 class TrialIndexInfo:
     def __init__(self, type, start, end=None):
         self.trial_type = type
@@ -80,6 +83,7 @@ increase_trial_counter_by = 0
 global dir_path  # the directory path (is used to reach the relevant directory that contains the relevant data files)
 global tii  # one trial's TrialIndexInfo class (is used for splitted trials)
 
+trial_type_short_list = []
 
 # Read all files one by one in order to take the needed information from each of them.
 def read_files():
@@ -372,6 +376,9 @@ def create_mat():
         indexes_length_per_file = trial_info.get_indexes_length()
         indexes_per_file = trial_info.get_indexes_per_file()
 
+        # add trial type to shortened list to keep in a seperate file
+        trial_type_short_list.append(trial_type)
+
         titled_trials_counter.extend([trials_counter]*sum(indexes_length_per_file))
 
         temp_files_num = [[fn] * l for fn, l in zip(files_num, indexes_length_per_file)]
@@ -438,8 +445,7 @@ def create_mat():
 
 
 # Create a csv file containing the data organized by trials.
-def create_CSV():
-    mat = create_mat()
+def create_CSV(mat):
     csv_name = "trials_data.csv"
     # keep the csv file in the current experiment's directory
     csv_path = os.path.join(dir_path, csv_name)
@@ -448,33 +454,57 @@ def create_CSV():
         writer.writerows(mat)
 
 
+def create_CSV_for_trial_type_short_list():
+    csv_name = "trial_type_short_list.csv"
+    titled_list = trial_type_short_list
+    titled_list.insert(0, "trial_type")
+    # keep the csv file in the current experiment's directory
+    csv_path = os.path.join(dir_path, csv_name)
+    with open(csv_path, 'w', newline='') as file:
+        writer = csv.writer(file, quoting=csv.QUOTE_ALL)
+        writer.writerows(zip(trial_type_short_list))
+
+
 # Main function to run this script.
-# def main():
-def run(exp_dir):
+def main():
+# def run(exp_dir):
     global paths_list, dir_path
 
     # if this function is run from this script:
     # Count how many data files there are (of type: '.hdf5')
-    # parent_directory = os.path.split(os.getcwd())[0]
-    # dir_path = os.path.join(parent_directory, "Output\\2020-11-18-16-55-33")
+    parent_directory = os.path.split(os.getcwd())[0]
+    dir_path = os.path.join(parent_directory, "Output\\33 - 2021-03-16-09-03-02 - Manar Mahamid - 208217406")
 
     # else: if this function is run from RTIMUToSound script:
-    dir_path = exp_dir
+    # dir_path = exp_dir
 
     path = os.listdir(dir_path)
 
-    file_num = 0
+    # file_num = 0
+    # for name in path:
+    #     if name.endswith(".hdf5"):
+    #         file_num += 1
+    #         paths_list.append(name)
+
+    count = 0
     for name in path:
         if name.endswith(".hdf5"):
-            file_num += 1
-            paths_list.append(name)
+            count += 1
+    temp = list(np.zeros(count))
+    for name in path:
+        if name.endswith(".hdf5"):
+            file_num = int(name[:2])
+            temp[file_num] = name
+    paths_list = temp
 
     # print(paths_list)
     # file_num = len([name for name in path if name.endswith(".hdf5")])
 
     read_files()
-    create_CSV()
+    mat = create_mat()
+    # create_CSV(mat)
+    create_CSV_for_trial_type_short_list()
 
 
-# if __name__ == "__main__":
-#     main()
+if __name__ == "__main__":
+    main()

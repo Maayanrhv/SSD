@@ -20,7 +20,7 @@ import csv
 
 # datasetNames = ['fulldataL','fulldataR','volLeftVec','freq_sin','timeVec','pitchVelVec','rollVelVec','IMUMat']
 datasetNames = ['fulldataL', 'fulldataR', 'volLeftVec', 'freq_sin', 'timeVec', 'pitchVelVec',
-                'rollVelVec', 'IMUMat', 'yy', 'trialType']
+                'rollVelVec', 'IMUMat', 'yy', 'trialType', 'WiaSLMark', 'HomingMark']
 # totalTimeSec=1200
 # totalTimeSec=1800
 totalTimeSec = 3600
@@ -164,6 +164,11 @@ class OutputFile:
                     f.create_dataset('trialType', data=filename1['trialType'][IMUtosound.vecStart:], chunks=True,
                                      maxshape=(None,))
                     f.create_dataset('IMUMat', data=filename1['IMUMat'][2:], chunks=True, maxshape=(None, None))
+                    f.create_dataset('WiaSLMark', data=filename1['WiaSLMark'][IMUtosound.vecStart:], chunks=True,
+                                     maxshape=(None,))
+                    f.create_dataset('HomingMark', data=filename1['HomingMark'][IMUtosound.vecStart:], chunks=True,
+                                     maxshape=(None,))
+
 
                 filename1.close()
                 time.sleep(1)
@@ -244,6 +249,14 @@ class OutputFile:
             f["trialType"].resize(f["trialType"].shape[0] + self.bufferData.trialType.shape[0], axis=0)
             f["trialType"][-self.bufferData.trialType.shape[0]:] = self.bufferData.trialType
             # print(self.bufferData.trialType)
+
+            self.bufferData.WiaSLMark = self.bufferData.WiaSLMark[1:]
+            f["WiaSLMark"].resize(f["WiaSLMark"].shape[0] + self.bufferData.WiaSLMark.shape[0], axis=0)
+            f["WiaSLMark"][-self.bufferData.WiaSLMark.shape[0]:] = self.bufferData.WiaSLMark
+
+            self.bufferData.HomingMark = self.bufferData.HomingMark[1:]
+            f["HomingMark"].resize(f["HomingMark"].shape[0] + self.bufferData.HomingMark.shape[0], axis=0)
+            f["HomingMark"][-self.bufferData.HomingMark.shape[0]:] = self.bufferData.HomingMark
 
         self.bufferData.init_vec()
 

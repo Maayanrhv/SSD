@@ -5,6 +5,16 @@ from enum import Enum
 import random
 from random import randint, choice
 
+
+should_mark = False
+prev_mark = 0
+prev_mark_one = False
+event_stretcher = 0
+
+should_mark_homing = False
+homing_prev_mark = 0
+homing_event_stretcher = 0
+
 # All trial types
 # Even - No sound
 # Odd - With sound
@@ -207,6 +217,62 @@ def trial(elpasedtime):
 
     return trialType
 
+
+def should_mark_homing_event():
+    global should_mark_homing
+    should_mark_homing = True
+
+
+def Homing_mark():
+    global should_mark_homing, homing_prev_mark, homing_event_stretcher
+
+    if homing_prev_mark != 0 and homing_event_stretcher > 50:
+        homing_prev_mark = 0
+        homing_event_stretcher = 0
+        print("homing_prev_mark changed to 0")
+
+    if should_mark_homing:
+        should_mark_homing = False
+        homing_prev_mark = 1
+        homing_event_stretcher = 0
+        print("prev_mark changed to 1")
+
+    homing_event_stretcher += 1
+    return homing_prev_mark
+
+
+
+def should_mark_event():
+    global should_mark
+    should_mark = True
+
+
+# 2 events:
+# forward ended - 1
+# backward started - 2
+def mark():
+    global should_mark, prev_mark, prev_mark_one, event_stretcher
+
+    if prev_mark != 0 and event_stretcher > 50:
+        prev_mark = 0
+        event_stretcher = 0
+        print("prev_mark changed to 0")
+
+    if should_mark:
+        should_mark = False
+        if prev_mark_one:
+            prev_mark = 2
+            prev_mark_one = False
+            event_stretcher = 0
+            print("prev_mark changed to 2")
+        else:
+            prev_mark = 1
+            prev_mark_one = True
+            event_stretcher = 0
+            print("prev_mark changed to 1")
+
+    event_stretcher += 1
+    return prev_mark
 
 # Return trials list
 def get_trials_list():

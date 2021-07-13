@@ -63,16 +63,26 @@ class RTdata:
         self.IMUMat = np.append([IMUVec], [IMUVec + 1],
                                 axis=0)  # contains the data from IMU throughout the entire program run
 
-    def set_data(self, roll_vel, yaw_vel, IMUMat, current_trial_type, current_yy):
+        # WiaSLMarks events
+        self.WiaSLMark = 0
+        # HomingMarks events
+        self.HomingMark = 0
+
+    def set_data(self, roll_vel, yaw_vel, IMUMat, current_trial_type, current_yy, WiaSL_mark, Homing_mark):  # , Homing_mark):
         self.timeVec = self.TT-self.startTT
         self.IMUMat = IMUMat
         self.yy = current_yy
         self.trialType = current_trial_type
         RTdata.set_roll_vel(self, roll_vel)
         RTdata.set_yaw_vel(self, yaw_vel)
+        self.WiaSLMark = WiaSL_mark
+        self.HomingMark = Homing_mark
 
     def set_trial_type(self, current_trial_type):
         self.trialType = current_trial_type
+    #
+    # def set_WiaSL_mark(self, mark):
+    #     self.WiaSLMark = mark
 
     def get_trial_type(self):
         return self.trialType
@@ -139,6 +149,8 @@ class RTdata:
         self.timeVec = np.append(self.timeVec, other.timeVec)
         self.yy = np.append(self.yy, other.yy)
         self.trialType = np.append(self.trialType, other.trialType)
+        self.WiaSLMark = np.append(self.WiaSLMark, other.WiaSLMark)
+        self.HomingMark = np.append(self.HomingMark, other.HomingMark)
 
         if np.shape(other.IMUMat)[0] != 2:
             self.IMUMat = np.append(self.IMUMat, [other.IMUMat], axis=0)
@@ -154,6 +166,8 @@ class RTdata:
         self.yawVelTemp = np.zeros(1)  # contains yaw velocity (after average)
         self.yy = np.zeros(1)  # callback counter
         self.trialType = np.zeros(1)  # current trial type
+        self.WiaSLMark = np.zeros(1)
+        self.HomingMark = np.zeros(1)
         IMUVec = np.zeros(6)  # the IMU data collected in RT
         self.IMUMat = np.append([IMUVec], [IMUVec + 1],
                                 axis=0)  # contains the data from IMU throughout the entire program run

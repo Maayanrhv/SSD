@@ -34,6 +34,8 @@ IMUtosound.vec_to_freq_function(600)  # initialize the function that transforms 
 data, roll_vel, yaw_vel, IMUVec = IMUtosound.init_params()  # initialize parameters relevant for saved data
 current_data = rt.RTdata(startTT)  # initialize RTData object that organizes the saved data per run
 output_file = opf.OutputFile()  # initialize OutputFile object that handles the saved data file
+WiaSL_mark = 0
+Homing_mark = 0
 
 
 """ Playing Sound """
@@ -47,7 +49,7 @@ def callback(in_data, frame_count, time_info, status):
     global output_file, current_data, left, right
 
     current_data.set_TT(TT)  # store current time in RTData object
-    current_data.set_data(roll_vel, yaw_vel, IMUVec, trialType, yy)  # store current data in RTData object
+    current_data.set_data(roll_vel, yaw_vel, IMUVec, trialType, yy, WiaSL_mark, Homing_mark)  # store current data in RTData object
     # check output file, with yy index, if missing something. ?
     left, right = current_data.get_RTdata()  # get each ear's sound
     # Apply Change
@@ -125,9 +127,13 @@ while GUI.appOngoing():
     # calculate the time passed
     elpased_time = round((time.time() - start_time), 3)
     trialType = Trials.trial(elpased_time)  # call the trial handler to activate it whenever required
-    QCoreApplication.processEvents()  # processes all pending events for the calling thread
+    QCoreApplication.processEvents()  # process all pending events for the calling thread
 
-QCoreApplication.processEvents()  # processes all pending events for the calling thread
+    # check for marks
+    WiaSL_mark = Trials.mark()
+    Homing_mark = Trials.Homing_mark()
+
+QCoreApplication.processEvents()  # process all pending events for the calling thread
 
 # Close PyAudio stream
 stream.stop_stream()

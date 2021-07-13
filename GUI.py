@@ -162,6 +162,18 @@ class Window(QWidget):
         self.dist_err_B.move(50, 340)
         self.dist_err_B.clicked.connect(self.insert_error_clicked)
 
+        # WialSL marking Button
+        self.WiaSL_mark_B = QPushButton(self.win)
+        self.WiaSL_mark_B.setText("WiaSL Mark")
+        self.WiaSL_mark_B.move(150, 20)
+        self.WiaSL_mark_B.clicked.connect(self.mark_clicked)
+
+        # Homing marking Button
+        self.Homing_mark_B = QPushButton(self.win)
+        self.Homing_mark_B.setText("Homing Mark")
+        self.Homing_mark_B.move(150, 40)
+        self.Homing_mark_B.clicked.connect(self.homing_mark_clicked)
+
         # Trials List Status
         self.trialListStatus = QPlainTextEdit(self.win)
         self.trialListStatus.move(330, 20)
@@ -195,6 +207,14 @@ class Window(QWidget):
         self.back_diagonal_dist_err_input.clear()
         self.back_horizontal_dist_err_input.clear()
         self.back_vertical_dist_err_input.clear()
+
+    def mark_clicked(self):
+        print("WiaSL Mark Clicked")
+        Trials.should_mark_event()
+
+    def homing_mark_clicked(self):
+        print("Homing Mark Clicked")
+        Trials.should_mark_homing_event()
 
     # Exiting the app and end the program
     def exit_clicked(self):

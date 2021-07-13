@@ -83,6 +83,7 @@ Velocity To Frequency Section
 #        The head rotation velocities range from about -150 to 150, so that is the range of the X axis of the function
 #        (though mathematically there's no limit).
 #        The corresponding frequencies range (Y axis) was chosen so that it will be pleasant for human hearing.
+# According to these values, a = 1608.5827, b = -3,857.1446
 def vec_to_freq_function(high=554.3522, low=103.8262):
     global a, b, shift, y0, yf, x0, xf
     yf = high  # the highest frequency allowed
