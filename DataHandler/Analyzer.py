@@ -1,4 +1,5 @@
 import numpy as np
+import scipy.stats as stats
 
 import DataHandler.Loader as Loader
 import DataHandler.GraphHandler as GraphHandler
@@ -111,24 +112,102 @@ def one_sample_ttest_statistics(gh):
 
 def paired_ttest_statistics(gh):
     # paired_ttest on the diffs.
+    # homing task, horizontal error
     result = Statistics.paired_ttest(gh.err_means_hor_with_sound, gh.err_means_hor_without_sound)
 
+    # wiasl forward task, horizontal error
     result = Statistics.paired_ttest(gh.err_means_hor_for_with_sound, gh.err_means_hor_for_without_sound)
 
+    # wiasl backward task, horizontal error
     result = Statistics.paired_ttest(gh.err_means_hor_back_with_sound, gh.err_means_hor_back_without_sound)
 
+    # homing task, vertical error
     result = Statistics.paired_ttest(gh.err_means_ver_with_sound, gh.err_means_ver_without_sound)
 
+    # wiasl forward task, vertical error
     result = Statistics.paired_ttest(gh.err_means_ver_for_with_sound, gh.err_means_ver_for_without_sound)
 
+    # wiasl backward task, vertical error
     result = Statistics.paired_ttest(gh.err_means_ver_back_with_sound, gh.err_means_ver_back_without_sound)
 
-    bbb = 5
+
+def bootstrapping_and_ci(gh):
+    # homing task, horizontal error
+    hom_hor_ws_sd = np.std(gh.err_means_hor_with_sound)  # for comparison with the ws bootstrap calculation
+    hom_hor_wos_sd = np.std(gh.err_means_hor_without_sound)  # for comparison with the wos bootstrap calculation
+    hom_hor_ws_mean_sd, hom_hor_ws_population = Statistics.bootstrap_sd(gh.err_means_hor_with_sound)
+    hom_hor_wos_mean_sd, hom_hor_wos_population = Statistics.bootstrap_sd(gh.err_means_hor_without_sound)
+    hom_hor_ws_ci = stats.t.interval(0.95, len(hom_hor_ws_population) - 1,
+                                     loc=np.mean(hom_hor_ws_population),
+                                     scale=stats.sem(hom_hor_ws_population))
+    hom_hor_wos_ci = stats.t.interval(0.95, len(hom_hor_wos_population) - 1,
+                                      loc=np.mean(hom_hor_wos_population),
+                                      scale=stats.sem(hom_hor_wos_population))
+
+    # wiasl forward task, horizontal error
+    for_hor_ws_sd = np.std(gh.err_means_hor_for_with_sound)  # for comparison with the ws bootstrap calculation
+    for_hor_wos_sd = np.std(gh.err_means_hor_for_without_sound)  # for comparison with the wos bootstrap calculation
+    for_hor_ws_mean_sd, for_hor_ws_population = Statistics.bootstrap_sd(gh.err_means_hor_for_with_sound)
+    for_hor_wos_mean_sd, for_hor_wos_population = Statistics.bootstrap_sd(gh.err_means_hor_for_without_sound)
+    for_hor_ws_ci = stats.t.interval(0.95, len(for_hor_ws_population) - 1,
+                                     loc=np.mean(for_hor_ws_population),
+                                     scale=stats.sem(for_hor_ws_population))
+    for_hor_wos_ci = stats.t.interval(0.95, len(for_hor_wos_population) - 1,
+                                      loc=np.mean(for_hor_wos_population),
+                                      scale=stats.sem(for_hor_wos_population))
+
+    # wiasl backward task, horizontal error
+    back_hor_ws_sd = np.std(gh.err_means_hor_back_with_sound)  # for comparison with the ws bootstrap calculation
+    back_hor_wos_sd = np.std(gh.err_means_hor_back_without_sound)  # for comparison with the wos bootstrap calculation
+    back_hor_ws_mean_sd, back_hor_ws_population = Statistics.bootstrap_sd(gh.err_means_hor_back_with_sound)
+    back_hor_wos_mean_sd, back_hor_wos_population = Statistics.bootstrap_sd(gh.err_means_hor_back_without_sound)
+    back_hor_ws_ci = stats.t.interval(0.95, len(back_hor_ws_population) - 1,
+                                      loc=np.mean(back_hor_ws_population),
+                                      scale=stats.sem(back_hor_ws_population))
+    back_hor_wos_ci = stats.t.interval(0.95, len(back_hor_wos_population) - 1,
+                                       loc=np.mean(back_hor_wos_population),
+                                       scale=stats.sem(back_hor_wos_population))
+
+    # homing task, vertical error
+    hom_ver_ws_sd = np.std(gh.err_means_ver_with_sound)  # for comparison with the ws bootstrap calculation
+    hom_ver_wos_sd = np.std(gh.err_means_ver_without_sound)  # for comparison with the wos bootstrap calculation
+    hom_ver_ws_mean_sd, hom_ver_ws_population = Statistics.bootstrap_sd(gh.err_means_ver_with_sound)
+    hom_ver_wos_mean_sd, hom_ver_wos_population = Statistics.bootstrap_sd(gh.err_means_ver_without_sound)
+    hom_ver_ws_ci = stats.t.interval(0.95, len(hom_ver_ws_population) - 1,
+                                     loc=np.mean(hom_ver_ws_population),
+                                     scale=stats.sem(hom_ver_ws_population))
+    hom_ver_wos_ci = stats.t.interval(0.95, len(hom_ver_wos_population) - 1,
+                                      loc=np.mean(hom_ver_wos_population),
+                                      scale=stats.sem(hom_ver_wos_population))
+
+    # wiasl forward task, vertical error
+    for_ver_ws_sd = np.std(gh.err_means_ver_for_with_sound)  # for comparison with the ws bootstrap calculation
+    for_ver_wos_sd = np.std(gh.err_means_ver_for_without_sound)  # for comparison with the wos bootstrap calculation
+    for_ver_ws_mean_sd, for_ver_ws_population = Statistics.bootstrap_sd(gh.err_means_ver_for_with_sound)
+    for_ver_wos_mean_sd, for_ver_wos_population = Statistics.bootstrap_sd(gh.err_means_ver_for_without_sound)
+    for_ver_ws_ci = stats.t.interval(0.95, len(for_ver_ws_population) - 1,
+                                     loc=np.mean(for_ver_ws_population),
+                                     scale=stats.sem(for_ver_ws_population))
+    for_ver_wos_ci = stats.t.interval(0.95, len(for_ver_wos_population) - 1,
+                                      loc=np.mean(for_ver_wos_population),
+                                      scale=stats.sem(for_ver_wos_population))
+
+    # wiasl backward task, vertical error
+    back_ver_ws_sd = np.std(gh.err_means_ver_back_with_sound)  # for comparison with the ws bootstrap calculation
+    back_ver_wos_sd = np.std(gh.err_means_ver_back_without_sound)  # for comparison with the wos bootstrap calculation
+    back_ver_ws_mean_sd, back_ver_ws_population = Statistics.bootstrap_sd(gh.err_means_ver_back_with_sound)
+    back_ver_wos_mean_sd, back_ver_wos_population = Statistics.bootstrap_sd(gh.err_means_ver_back_without_sound)
+    back_ver_ws_ci = stats.t.interval(0.95, len(back_ver_ws_population) - 1,
+                                      loc=np.mean(back_ver_ws_population),
+                                      scale=stats.sem(back_ver_ws_population))
+    back_ver_wos_ci = stats.t.interval(0.95, len(back_ver_wos_population) - 1,
+                                       loc=np.mean(back_ver_wos_population),
+                                       scale=stats.sem(back_ver_wos_population))
 
 
 def main():
     loader = Loader.Loader()  # load, read and clean all data
-    gh = GraphHandler.GraphHandler(loader.participants, take_half_trials=True)  # create a graph handler to plot graphs
+    gh = GraphHandler.GraphHandler(loader.participants, take_half_trials=False)  # create a graph handler to plot graphs
 
     # Plot each error type histograms
     # plot_histograms(gh)
@@ -143,8 +222,9 @@ def main():
     # for per participants only
     # one_sample_ttest_statistics(gh)
     # for per trials
-    paired_ttest_statistics(gh)
-
+    # paired_ttest_statistics(gh)
+    # calculate bootstrap on the SD with sound and without sound separately
+    bootstrapping_and_ci(gh)
 
 
 if __name__ == "__main__":
