@@ -74,6 +74,8 @@ time_vec = []  # a list of all trials' time array
 vol_left_vec = []  # a list of all trials' volumes in left ear
 yy = []  # a list of all trials' yy values
 IMUMat = []  # a matrix of all trials' IMU velocities
+homing_mark = []  # a list of all trials' homing mark
+wiasl_mark = []  # a list of all trials' wiasl mark
 remaining_error = []  # a list of each trial's remaining distance error value
 straying_error = []  # a list of each trial's straying distance error value
 paths_list = []  # a list of all the data files created during the experiment
@@ -127,6 +129,12 @@ def organize_data_by_trials(f, file_num):
 
     # get all trials' velocities data (IMUMat)
     IMUMat.extend(get_trials_IMU_velocities(f))
+
+    # get all trials' homing marks
+    homing_mark.extend(get_trials_homing_mark(f))
+
+    # get all trials' wiasl marks
+    wiasl_mark.extend(get_trials_wiasl_mark(f))
 
     trial_to_handle += increase_trial_counter_by
 
@@ -338,6 +346,69 @@ def get_trials_yy(f):
     return yy
 
 
+# Get all trials' homing mark values
+# Input: - f - the file
+def get_trials_homing_mark(f):
+    global trial_to_handle
+
+    hom_mark = []
+
+    # Go over each trial and add its homing mark values to list
+
+    # in case we have a complete trial data (we reached the trial's end)
+    if trials_indexes:
+        temp_counter = trial_to_handle
+        for i in range(temp_counter, len(trials_indexes)):
+            pair = trials_indexes[i]
+            if "HomingMark" not in f:
+                minus_one_array = np.full((1, len(pair.get_indexes_per_file()[-1])), -1)
+                hom_mark.extend(list(minus_one_array[0]))
+            else:
+                hom_mark.extend(f["HomingMark"][pair.get_indexes_per_file()[-1]])
+    # in case there's a a splitted trial which didn't end yet
+    if "tii" in globals():
+        indexes_of_data = tii.get_indexes_per_file()[-1]
+        # in case there are no homing marks
+        if "HomingMark" not in f:
+            minus_one_array = np.full((1, len(indexes_of_data)), -1)
+            hom_mark.extend(list(minus_one_array[0]))
+        else:
+            hom_mark.extend(f["HomingMark"][indexes_of_data])
+
+    return hom_mark
+
+
+# Get all trials' wiasl mark values
+# Input: - f - the file
+def get_trials_wiasl_mark(f):
+    global trial_to_handle
+
+    wiasl_mark = []
+
+    # Go over each trial and add its homing mark values to list
+
+    # in case we have a complete trial data (we reached the trial's end)
+    if trials_indexes:
+        temp_counter = trial_to_handle
+        for i in range(temp_counter, len(trials_indexes)):
+            pair = trials_indexes[i]
+            if "WiaSLMark" not in f:
+                minus_one_array = np.full((1, len(pair.get_indexes_per_file()[-1])), -1)
+                wiasl_mark.extend(list(minus_one_array[0]))
+            else:
+                wiasl_mark.extend(f["WiaSLMark"][pair.get_indexes_per_file()[-1]])
+    # in case there's a a splitted trial which didn't end yet
+    if "tii" in globals():
+        indexes_of_data = tii.get_indexes_per_file()[-1]
+        if "WiaSLMark" not in f:
+            minus_one_array = np.full((1, len(indexes_of_data)), -1)
+            wiasl_mark.extend(list(minus_one_array[0]))
+        else:
+            wiasl_mark.extend(f["WiaSLMark"][indexes_of_data])
+
+    return wiasl_mark
+
+
 # Get all trials' velocities data (IMUMat)
 # Input: - f - the file
 def get_trials_IMU_velocities(f):
@@ -418,6 +489,12 @@ def create_mat():
     titled_yy = yy
     titled_yy.insert(0, "yy")
 
+    titled_hom_mark = homing_mark
+    titled_hom_mark.insert(0, "Homing Mark")
+
+    titled_wiasl_mark = wiasl_mark
+    titled_wiasl_mark.insert(0, "WiaSL Mark")
+
     titled_gy = [row[0] for row in IMUMat]
     titled_gy.insert(0, "Pitch gy")
 
@@ -436,12 +513,9 @@ def create_mat():
     titled_x = [row[5] for row in IMUMat]
     titled_x.insert(0, "x axis Forward-Backward")
 
-    # return [p for p in zip(titled_trials_counter, titled_trial_file_num, titled_trial_all_indexes,
-    #                        titled_freq_sin_values, titled_full_data_L, titled_full_data_R, titled_time_vec,
-    #                        titled_vol_left_vec, titled_yy)]
     return [p for p in zip(titled_trials_counter, titled_trial_file_num, titled_trial_all_indexes, titled_trial_type,
                            titled_freq_sin_values, titled_time_vec, titled_vol_left_vec, titled_yy, titled_gy,
-                           titled_gz, titled_gx, titled_y, titled_z, titled_x)]
+                           titled_gz, titled_gx, titled_y, titled_z, titled_x, titled_hom_mark, titled_wiasl_mark)]
 
 
 # Create a csv file containing the data organized by trials.
@@ -473,7 +547,7 @@ def main():
     # if this function is run from this script:
     # Count how many data files there are (of type: '.hdf5')
     parent_directory = os.path.split(os.getcwd())[0]
-    dir_path = os.path.join(parent_directory, "Output\\33 - 2021-03-16-09-03-02 - Manar Mahamid - 208217406")
+    dir_path = os.path.join(parent_directory, "Output\\35 - 2021-03-16-11-17-15")
 
     # else: if this function is run from RTIMUToSound script:
     # dir_path = exp_dir
@@ -502,8 +576,8 @@ def main():
 
     read_files()
     mat = create_mat()
-    # create_CSV(mat)
-    create_CSV_for_trial_type_short_list()
+    create_CSV(mat)
+    # create_CSV_for_trial_type_short_list()
 
 
 if __name__ == "__main__":
