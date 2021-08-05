@@ -5,7 +5,7 @@ Trial Number,Error 1 - Diagonal Distance,Error 2 - Horizontal Distance,Error 3 -
 4,2800,-500,-2750,-,-,-,,
 5,2050,-2400,1100,-,-,-,,
 6,1200,-800,-820,-,-,-,,
-7,800,-200,900,2400,-2300,-1850,,"Ended trial after forward, so we don't know when backwords ended"
+7,800,-200,900,2400,-2300,-1850,,"Ended trial after forward, so we don't know when backwards ended"
 8,1000,-200,-1100,3100,-3000,-200,,
 9,500,-150,450,2800,-2500,-1700,,
 10,1540,-900,-1000,-,-,-,,

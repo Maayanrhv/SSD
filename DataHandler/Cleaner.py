@@ -1,4 +1,5 @@
 import numpy as np
+from DataHandler import Participant
 
 
 # clean a participant's trials data
@@ -78,3 +79,98 @@ def clean_errors_data(participant, data_mat):
     participant.set_with_sound_indexes_flag(with_sound_indx)
 
     return data_mat
+
+
+# clean wiasl marks
+def clean_wiasl_marks(participant, wiasl_mark):
+    if participant.num == 7:
+        # trial 27 includes only the goal point without any marks.
+        ti = participant.trials_info_list[26]
+        participant.wiasl_mark_forward[26] = Participant.Pair(ti.start, ti.end)
+        participant.wiasl_mark_backward[26] = Participant.Pair()
+
+    elif participant.num == 8:
+        # trial 35 includes only the goal point without any marks.
+        ti = participant.trials_info_list[34]
+        participant.wiasl_mark_forward[34] = Participant.Pair(ti.start, ti.end)
+        participant.wiasl_mark_backward[34] = Participant.Pair()
+
+    elif participant.num == 9:
+        # Trial 33 is a miss trial so it needs to be disregarded
+        participant.wiasl_mark_forward[32] = Participant.Pair()
+        participant.wiasl_mark_backward[32] = Participant.Pair()
+
+    elif participant.num == 10:
+        # in trial 18, backward mark (2) started too late (when trial ended). Should be ~3 seconds earlier.
+        pair = participant.wiasl_mark_backward[17]
+        participant.wiasl_mark_backward[17] = Participant.Pair(pair.start - 60, pair.end)
+
+    elif participant.num == 12:
+        # trial 7 includes only the goal point without any marks.
+        ti = participant.trials_info_list[6]
+        participant.wiasl_mark_forward[6] = Participant.Pair(ti.start, ti.end)
+        participant.wiasl_mark_backward[6] = Participant.Pair()
+
+    elif participant.num == 13:
+        # trial 10 includes only the goal point without any marks.
+        ti = participant.trials_info_list[9]
+        participant.wiasl_mark_forward[9] = Participant.Pair(ti.start, ti.end)
+        participant.wiasl_mark_backward[9] = Participant.Pair()
+
+    elif participant.num == 17:
+        # Trial 26 is a miss trial so it needs to be disregarded
+        participant.wiasl_mark_forward[25] = Participant.Pair()
+        participant.wiasl_mark_backward[25] = Participant.Pair()
+
+        # trial 29 includes only the goal point without any marks.
+        ti = participant.trials_info_list[28]
+        participant.wiasl_mark_forward[28] = Participant.Pair(ti.start, ti.end)
+        participant.wiasl_mark_backward[28] = Participant.Pair()
+
+        # trial 30 includes only the goal point without any marks.
+        ti = participant.trials_info_list[29]
+        one_found = False
+        for i in range(ti.start, ti.end + 1):
+            if wiasl_mark[i] == 2.0 and not one_found:
+                participant.wiasl_mark_forward[29] = Participant.Pair(ti.start, i)
+                one_found = True
+            elif wiasl_mark[i] == 1.0 and one_found:
+                participant.wiasl_mark_backward[29] = Participant.Pair(i, ti.end)
+                break
+
+    elif participant.num == 32:
+        # Trial 17 is a miss trial so it needs to be disregarded
+        participant.wiasl_mark_forward[16] = Participant.Pair()
+        participant.wiasl_mark_backward[16] = Participant.Pair()
+
+
+# clean homing marks
+def clean_homing_marks(participant):
+    if participant.num == 9:
+        # Trial 33 is a miss trial so it needs to be disregarded
+        participant.homing_mark_indexes[32] = Participant.Pair()
+
+    if participant.num == 17:
+        # Trial 26 is a miss trial so it needs to be disregarded
+        participant.homing_mark_indexes[25] = Participant.Pair()
+
+    elif participant.num == 23:
+        # trial 15 ended earlier than specified,
+        # but we don't know how early, so we can't use this trial for swaying calculations.
+        participant.homing_mark_indexes[14] = Participant.Pair()
+
+        # trial 19 ended earlier than specified,
+        # but we don't know how early, so we can't use this trial for swaying calculations.
+        participant.homing_mark_indexes[18] = Participant.Pair()
+
+    elif participant.num == 27:
+        # trial 25 is a wiasl mark but homing mark was mistakenly pressed, so we remove this homing mark.
+        participant.homing_mark_indexes[24] = Participant.Pair()
+
+    elif participant.num == 31:
+        # trial 26 is a wiasl mark but homing mark was mistakenly pressed, so we remove this homing mark.
+        participant.homing_mark_indexes[25] = Participant.Pair()
+
+    elif participant.num == 32:
+        # Trial 17 is a miss trial so it needs to be disregarded
+        participant.homing_mark_indexes[16] = Participant.Pair()

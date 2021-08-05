@@ -24,7 +24,7 @@ Trial Number,Error 1 - Diagonal Distance,Error 2 - Horizontal Distance,Error 3 -
 23,150,-120,-70,920,200,-900,,
 24,590,-280,-560,1630,1000,-1440,,
 25,640,-230,-620,1300,-1100,-1000,,
-26,520,290,-500,-,-,-,,sound cable nutak - don't use this trial
+26,520,290,-500,-,-,-,,sound cable disconnected - don't use this trial
 27,1500,-1800,-860,-,-,-,,
 28,490,-240,-460,-,-,-,,
 29,900,-200,-880,1090,-800,-1800,,ended trial before backward

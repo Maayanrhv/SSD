@@ -55,15 +55,10 @@ class Loader:
         path = os.path.join(participant_dir, 'trials_data.csv')
         td_f = pd.read_csv(path)
         mat_td_f = Cleaner.clean_trials_data(participant.num, td_f.to_numpy())
-        # participant.set_data_from_trials_data(td_f['Trial Number'], td_f['Trial File Number'], td_f['Trial Indexes'],
-        #                                       td_f['Trial Type'], td_f['Freq Sin Values'], td_f['Time Vec'],
-        #                                       td_f['Volume Left Vec'], td_f['yy'], td_f['Pitch gy'], td_f['Yaw gz'],
-        #                                       td_f['Roll gx'], td_f['y axis Left-Right'], td_f['z axis Up-Down'],
-        #                                       td_f['x axis Forward-Backward'])
         participant.set_data_from_trials_data(mat_td_f[:, 0], mat_td_f[:, 1], mat_td_f[:, 2], mat_td_f[:, 3],
                                               mat_td_f[:, 4], mat_td_f[:, 5], mat_td_f[:, 6], mat_td_f[:, 7],
                                               mat_td_f[:, 8], mat_td_f[:, 9], mat_td_f[:, 10], mat_td_f[:, 11],
-                                              mat_td_f[:, 12], mat_td_f[:, 13])
+                                              mat_td_f[:, 12], mat_td_f[:, 13], mat_td_f[:, 14], mat_td_f[:, 15])
 
     # Read the trial_type_short_list.csv file of a single participant
     def read_trial_type_short_list(self, participant_dir, participant):

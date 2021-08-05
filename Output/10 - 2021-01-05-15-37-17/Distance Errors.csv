@@ -16,7 +16,7 @@ Trial Number,Error 1 - Diagonal Distance,Error 2 - Horizontal Distance,Error 3 -
 15,2500,-800,-2600,-,-,-,,
 16,500,-700,770,-,-,-,,
 17,200,-150,-200,-,-,-,,
-18,470,500,-320,840,140,-900,,Started bakward mark (2) too late 9when trial ended). Should be ~3 seconds earlier
+18,470,500,-320,840,140,-900,,Started bakward mark (2) too late (when trial ended). Should be ~3 seconds earlier
 19,500,400,-600,-,-,-,,
 20,400,200,-420,-,-,-,,
 21,900,350,-820,700,-300,-690,,
