@@ -22,6 +22,30 @@ class GraphHandler:
         # Participants
         self.participants = participants
 
+        # Swaying - means
+        # With sound only
+        # homing
+        self.sway_means_hom_roll_with_sound = []
+        self.sway_means_hom_yaw_with_sound = []
+        # wiasl - forward
+        self.sway_means_for_roll_with_sound = []
+        self.sway_means_for_yaw_with_sound = []
+        # wiasl - backward
+        self.sway_means_back_roll_with_sound = []
+        self.sway_means_back_yaw_with_sound = []
+        # Without sound only
+        # homing
+        self.sway_means_hom_roll_without_sound = []
+        self.sway_means_hom_yaw_without_sound = []
+        # wiasl - forward
+        self.sway_means_for_roll_without_sound = []
+        self.sway_means_for_yaw_without_sound = []
+        # wiasl - backward
+        self.sway_means_back_roll_without_sound = []
+        self.sway_means_back_yaw_without_sound = []
+
+        self.set_swaying_means_with_and_without_sound()
+
         # Distance Errors - means
         # Both with and without sound
         # homing
@@ -76,8 +100,8 @@ class GraphHandler:
         # both with and without sound
         # self.set_mean_errors()
 
-        #self.set_mean_errors_with_and_without_sound()
-        self.set_mean_errors_with_and_without_sound_per_trials()
+        self.set_mean_errors_with_and_without_sound()
+        # self.set_mean_errors_with_and_without_sound_per_trials()
         # self.set_mean_errors_with_and_without_sound_for_half_the_trials(take_half_trials)
 
         self.set_diffs()
@@ -619,3 +643,134 @@ class GraphHandler:
                 [participant.error_3_vertical_backward[i] for i in
                  range(len(participant.error_3_vertical_backward[:-2]))
                  if participant.homing_indexes_flag[i] == 0 and participant.with_sound_indexes_flag[i] == 0])
+
+    def set_swaying_means_with_and_without_sound(self):
+        for participant in self.participants:
+            # Roll swaying
+            # With sound
+            # homing
+            if participant.roll_velocities_hom:
+                roll_stds_hom_with = []
+                for i in range(len(participant.roll_velocities_hom[:-2])):
+                    velocities_list = participant.roll_velocities_hom[i]
+                    if velocities_list:
+                        if participant.with_sound_indexes_flag[i] == 1:
+                            swaying = np.std(velocities_list)
+                            roll_stds_hom_with.append(swaying)
+                self.sway_means_hom_roll_with_sound.append(np.mean(roll_stds_hom_with))
+            # wiasl - forward
+            if participant.roll_velocities_for:
+                roll_stds_for_with = []
+                for i in range(len(participant.roll_velocities_for[:-2])):
+                    velocities_list = participant.roll_velocities_for[i]
+                    if velocities_list:
+                        if participant.with_sound_indexes_flag[i] == 1:
+                            swaying = np.std(velocities_list)
+                            roll_stds_for_with.append(swaying)
+                self.sway_means_for_roll_with_sound.append(np.mean(roll_stds_for_with))
+            # wiasl - backward
+            if participant.roll_velocities_back:
+                roll_stds_back_with = []
+                for i in range(len(participant.roll_velocities_back[:-2])):
+                    velocities_list = participant.roll_velocities_back[i]
+                    if velocities_list:
+                        if participant.with_sound_indexes_flag[i] == 1:
+                            swaying = np.std(velocities_list)
+                            roll_stds_back_with.append(swaying)
+                self.sway_means_back_roll_with_sound.append(np.mean(roll_stds_back_with))
+            # Without sound
+            # homing
+            if participant.roll_velocities_hom:
+                roll_stds_hom_without = []
+                for i in range(len(participant.roll_velocities_hom[:-2])):
+                    velocities_list = participant.roll_velocities_hom[i]
+                    if velocities_list:
+                        if participant.with_sound_indexes_flag[i] == 0:
+                            swaying = np.std(velocities_list)
+                            roll_stds_hom_without.append(swaying)
+                self.sway_means_hom_roll_without_sound.append(np.mean(roll_stds_hom_without))
+            # wiasl - forward
+            if participant.roll_velocities_for:
+                roll_stds_for_without = []
+                for i in range(len(participant.roll_velocities_for[:-2])):
+                    velocities_list = participant.roll_velocities_for[i]
+                    if velocities_list:
+                        if participant.with_sound_indexes_flag[i] == 0:
+                            swaying = np.std(velocities_list)
+                            roll_stds_for_without.append(swaying)
+                self.sway_means_for_roll_without_sound.append(np.mean(roll_stds_for_without))
+            # wiasl - backward
+            if participant.roll_velocities_back:
+                roll_stds_back_without = []
+                for i in range(len(participant.roll_velocities_back[:-2])):
+                    velocities_list = participant.roll_velocities_back[i]
+                    if velocities_list:
+                        if participant.with_sound_indexes_flag[i] == 0:
+                            swaying = np.std(velocities_list)
+                            roll_stds_back_without.append(swaying)
+                self.sway_means_back_roll_without_sound.append(np.mean(roll_stds_back_without))
+
+
+            # Yaw swaying
+            # With sound
+            # homing
+            if participant.yaw_velocities_hom:
+                yaw_stds_hom_with = []
+                for i in range(len(participant.yaw_velocities_hom[:-2])):
+                    velocities_list = participant.yaw_velocities_hom[i]
+                    if velocities_list:
+                        if participant.with_sound_indexes_flag[i] == 1:
+                            swaying = np.std(velocities_list)
+                            yaw_stds_hom_with.append(swaying)
+                self.sway_means_hom_yaw_with_sound.append(np.mean(yaw_stds_hom_with))
+            # wiasl - forward
+            if participant.yaw_velocities_for:
+                yaw_stds_for_with = []
+                for i in range(len(participant.yaw_velocities_for[:-2])):
+                    velocities_list = participant.yaw_velocities_for[i]
+                    if velocities_list:
+                        if participant.with_sound_indexes_flag[i] == 1:
+                            swaying = np.std(velocities_list)
+                            yaw_stds_for_with.append(swaying)
+                self.sway_means_for_yaw_with_sound.append(np.mean(yaw_stds_for_with))
+            # wiasl - backward
+            if participant.yaw_velocities_back:
+                yaw_stds_back_with = []
+                for i in range(len(participant.yaw_velocities_back[:-2])):
+                    velocities_list = participant.yaw_velocities_back[i]
+                    if velocities_list:
+                        if participant.with_sound_indexes_flag[i] == 1:
+                            swaying = np.std(velocities_list)
+                            yaw_stds_back_with.append(swaying)
+                self.sway_means_back_yaw_with_sound.append(np.mean(yaw_stds_back_with))
+            # Without sound
+            # homing
+            if participant.yaw_velocities_hom:
+                yaw_stds_hom_without = []
+                for i in range(len(participant.yaw_velocities_hom[:-2])):
+                    velocities_list = participant.yaw_velocities_hom[i]
+                    if velocities_list:
+                        if participant.with_sound_indexes_flag[i] == 0:
+                            swaying = np.std(velocities_list)
+                            yaw_stds_hom_without.append(swaying)
+                self.sway_means_hom_yaw_without_sound.append(np.mean(yaw_stds_hom_without))
+            # wiasl - forward
+            if participant.yaw_velocities_for:
+                yaw_stds_for_without = []
+                for i in range(len(participant.yaw_velocities_for[:-2])):
+                    velocities_list = participant.yaw_velocities_for[i]
+                    if velocities_list:
+                        if participant.with_sound_indexes_flag[i] == 0:
+                            swaying = np.std(velocities_list)
+                            yaw_stds_for_without.append(swaying)
+                self.sway_means_for_yaw_without_sound.append(np.mean(yaw_stds_for_without))
+            # wiasl - backward
+            if participant.yaw_velocities_back:
+                yaw_stds_back_without = []
+                for i in range(len(participant.yaw_velocities_back[:-2])):
+                    velocities_list = participant.yaw_velocities_back[i]
+                    if velocities_list:
+                        if participant.with_sound_indexes_flag[i] == 0:
+                            swaying = np.std(velocities_list)
+                            yaw_stds_back_without.append(swaying)
+                self.sway_means_back_yaw_without_sound.append(np.mean(yaw_stds_back_without))

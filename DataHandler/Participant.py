@@ -64,6 +64,13 @@ class Participant:
         # and the index when the trial ended
         self.homing_mark_indexes = []
 
+        self.roll_velocities_hom = []
+        self.yaw_velocities_hom = []
+        self.roll_velocities_for = []
+        self.yaw_velocities_for = []
+        self.roll_velocities_back = []
+        self.yaw_velocities_back = []
+
         # taken from read_hdf5_files
         # currently unused
         # self.sound_L = []  # fullDataL
@@ -105,6 +112,9 @@ class Participant:
 
         self.set_homing_mark(homing_mark)
         self.set_wiasl_mark(wiasl_mark)
+
+        self.set_roll_velocities()
+        self.set_yaw_velocities()
 
     def set_trials_start_end_indexes(self):
         curr_trial_num = 0
@@ -199,3 +209,41 @@ class Participant:
 
     def set_trial_type_short_list(self, trial_type_short_list):
         self.trial_type_short_list = trial_type_short_list
+
+    def set_roll_velocities(self):
+        if self.homing_mark_exists:
+            for pair in self.homing_mark_indexes:
+                if pair.start != -1:
+                    self.roll_velocities_hom.append(list(self.roll_gx[pair.start:pair.end + 1]))
+                else:
+                    self.roll_velocities_hom.append([])
+        if self.wiasl_mark_exists:
+            for pair in self.wiasl_mark_forward:
+                if pair.start != -1:
+                    self.roll_velocities_for.append(list(self.roll_gx[pair.start:pair.end + 1]))
+                else:
+                    self.roll_velocities_for.append([])
+            for pair in self.wiasl_mark_backward:
+                if pair.start != -1:
+                    self.roll_velocities_back.append(list(self.roll_gx[pair.start:pair.end + 1]))
+                else:
+                    self.roll_velocities_back.append([])
+
+    def set_yaw_velocities(self):
+        if self.homing_mark_exists:
+            for pair in self.homing_mark_indexes:
+                if pair.start != -1:
+                    self.yaw_velocities_hom.append(list(self.yaw_gz[pair.start:pair.end + 1]))
+                else:
+                    self.yaw_velocities_hom.append([])
+        if self.wiasl_mark_exists:
+            for pair in self.wiasl_mark_forward:
+                if pair.start != -1:
+                    self.yaw_velocities_for.append(list(self.yaw_gz[pair.start:pair.end + 1]))
+                else:
+                    self.yaw_velocities_for.append([])
+            for pair in self.wiasl_mark_backward:
+                if pair.start != -1:
+                    self.yaw_velocities_back.append(list(self.yaw_gz[pair.start:pair.end + 1]))
+                else:
+                    self.yaw_velocities_back.append([])
