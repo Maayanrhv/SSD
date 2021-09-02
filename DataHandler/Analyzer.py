@@ -4,6 +4,7 @@ import scipy.stats as stats
 import DataHandler.Loader as Loader
 import DataHandler.GraphHandler as GraphHandler
 import DataHandler.Statistics as Statistics
+import DataHandler.DataKeeper as DataKeeper
 
 
 def plot_histograms(gh):
@@ -111,7 +112,7 @@ def one_sample_ttest_statistics(gh):
 
 
 def paired_ttest_statistics(gh):
-    # paired_ttest on the diffs.
+    # paired_ttest on the distance errors.
     # homing task, horizontal error
     result = Statistics.paired_ttest(gh.err_means_hor_with_sound, gh.err_means_hor_without_sound)
 
@@ -205,6 +206,78 @@ def bootstrapping_and_ci(gh):
                                        scale=stats.sem(back_ver_wos_population))
 
 
+def significance_errorbars_with_sem(gh):
+    gh.significance_with_sem_graph(gh.err_means_hor_with_sound, gh.err_means_hor_without_sound)
+    gh.significance_with_sem_graph(gh.err_means_hor_for_with_sound, gh.err_means_hor_for_without_sound)
+    gh.significance_with_sem_graph(gh.err_means_hor_back_with_sound, gh.err_means_hor_back_without_sound)
+    gh.significance_with_sem_graph(gh.err_means_ver_with_sound, gh.err_means_ver_without_sound)
+    gh.significance_with_sem_graph(gh.err_means_ver_for_with_sound, gh.err_means_ver_for_without_sound)
+    gh.significance_with_sem_graph(gh.err_means_ver_back_with_sound, gh.err_means_ver_back_without_sound)
+
+
+
+def paired_ttest_statistics_for_swaying(gh):
+    # paired_ttest on the swaying errors.
+    # homing task, roll error
+    result = Statistics.paired_ttest(gh.sway_means_hom_roll_with_sound, gh.sway_means_hom_roll_without_sound)
+
+    # wiasl forward task, roll error
+    result = Statistics.paired_ttest(gh.sway_means_for_roll_with_sound, gh.sway_means_for_roll_without_sound)
+
+    # wiasl backward task, roll error
+    result = Statistics.paired_ttest(gh.sway_means_back_roll_with_sound, gh.sway_means_back_roll_without_sound)
+
+    # homing task, yaw error
+    result = Statistics.paired_ttest(gh.sway_means_hom_yaw_with_sound, gh.sway_means_hom_yaw_without_sound)
+
+    # wiasl forward task, yaw error
+    result = Statistics.paired_ttest(gh.sway_means_for_yaw_with_sound, gh.sway_means_for_yaw_without_sound)
+
+    # wiasl backward task, yaw error
+    result = Statistics.paired_ttest(gh.sway_means_back_yaw_with_sound, gh.sway_means_back_yaw_without_sound)
+
+    bbb = 5
+
+
+def keep_data_in_file(gh):
+    # Distance errors
+    # 2 arrays - with and without sound
+    DataKeeper.save_with_and_without_sound_to_csv(gh.err_means_hor_with_sound, gh.err_means_hor_without_sound,
+                                                  'homing_horizontal')
+    DataKeeper.save_with_and_without_sound_to_csv(gh.err_means_hor_for_with_sound, gh.err_means_hor_for_without_sound,
+                                                  'forward_horizontal')
+    DataKeeper.save_with_and_without_sound_to_csv(gh.err_means_hor_back_with_sound, gh.err_means_hor_back_without_sound,
+                                                  'backward_horizontal')
+    DataKeeper.save_with_and_without_sound_to_csv(gh.err_means_ver_with_sound, gh.err_means_ver_without_sound,
+                                                  'homing_vertical')
+    DataKeeper.save_with_and_without_sound_to_csv(gh.err_means_ver_for_with_sound, gh.err_means_ver_for_without_sound,
+                                                  'forward_vertical')
+    DataKeeper.save_with_and_without_sound_to_csv(gh.err_means_ver_back_with_sound, gh.err_means_ver_back_without_sound,
+                                                  'backward_vertical')
+    # 1 array - the diff of without-with sound
+    DataKeeper.save_diff_to_csv(gh.diffs_homing_horizontal, 'homing_horizontal')
+    DataKeeper.save_diff_to_csv(gh.diffs_for_horizontal, 'forward_horizontal')
+    DataKeeper.save_diff_to_csv(gh.diffs_back_horizontal, 'backward_horizontal')
+    DataKeeper.save_diff_to_csv(gh.diffs_homing_vertical, 'homing_vertical')
+    DataKeeper.save_diff_to_csv(gh.diffs_for_vertical, 'forward_vertical')
+    DataKeeper.save_diff_to_csv(gh.diffs_back_vertical, 'backward_vertical')
+
+
+    # Swaying errors
+    DataKeeper.save_with_and_without_sound_to_csv(gh.sway_means_hom_roll_with_sound, gh.sway_means_hom_roll_without_sound,
+                                                  'homing_roll')
+    DataKeeper.save_with_and_without_sound_to_csv(gh.sway_means_for_roll_with_sound, gh.sway_means_for_roll_without_sound,
+                                                  'forward_roll')
+    DataKeeper.save_with_and_without_sound_to_csv(gh.sway_means_back_roll_with_sound, gh.sway_means_back_roll_without_sound,
+                                                  'backward_roll')
+    DataKeeper.save_with_and_without_sound_to_csv(gh.sway_means_hom_yaw_with_sound, gh.sway_means_hom_yaw_without_sound,
+                                                  'homing_yaw')
+    DataKeeper.save_with_and_without_sound_to_csv(gh.sway_means_for_yaw_with_sound, gh.sway_means_for_yaw_without_sound,
+                                                  'forward_yaw')
+    DataKeeper.save_with_and_without_sound_to_csv(gh.sway_means_back_yaw_with_sound, gh.sway_means_back_yaw_without_sound,
+                                                  'backward_yaw')
+
+
 def main():
     loader = Loader.Loader()  # load, read and clean all data
     gh = GraphHandler.GraphHandler(loader.participants, take_half_trials=False)  # create a graph handler to plot graphs
@@ -221,10 +294,21 @@ def main():
     # Statistics
     # for per participants only
     # one_sample_ttest_statistics(gh)
+
     # for per trials
     # paired_ttest_statistics(gh)
+
     # calculate bootstrap on the SD with sound and without sound separately
-    bootstrapping_and_ci(gh)
+    # bootstrapping_and_ci(gh)
+
+    # calculate paired t-test for the swaying errors
+    # paired_ttest_statistics_for_swaying(gh)
+
+    # save data for external analysis (JASP)
+    # keep_data_in_file(gh)
+
+    # Plot errorbars graphs for significant results
+    significance_errorbars_with_sem(gh)
 
 
 if __name__ == "__main__":

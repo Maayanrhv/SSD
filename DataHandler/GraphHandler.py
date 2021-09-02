@@ -774,3 +774,19 @@ class GraphHandler:
                             swaying = np.std(velocities_list)
                             yaw_stds_back_without.append(swaying)
                 self.sway_means_back_yaw_without_sound.append(np.mean(yaw_stds_back_without))
+
+    def significance_with_sem_graph(self, with_sound, without_sound):
+        n = len(with_sound)  # sample size == 35
+
+        x = [2, 4]
+        y = [np.mean(with_sound), np.mean(without_sound)]
+
+        # Error bars depicted by SEM
+        with_sound_sem = np.std(with_sound) / np.sqrt(n)
+        without_sound_sem = np.std(without_sound) / np.sqrt(n)
+
+        fig, ax = plt.subplots(1)
+        ax.errorbar(x, y, yerr=[with_sound_sem, without_sound_sem], fmt='o')
+        ax.set_xlim([0, 6])
+        ax.set_xticklabels([])
+        plt.show()
