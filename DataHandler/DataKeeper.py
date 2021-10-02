@@ -1,5 +1,6 @@
 import csv
 import os
+import numpy as np
 
 
 def save_diff_to_csv(data, name):
@@ -7,6 +8,18 @@ def save_diff_to_csv(data, name):
     list_data.insert(0, "diff")
 
     mat = [p for p in zip(list_data)]
+    create_csv(mat, name)
+
+
+def save_with_and_without_sound_to_csv_absolute_values(data1, data2, name):
+    list1 = data1.copy()
+    list2 = data2.copy()
+    list1 = list(np.abs(list1))
+    list2 = list(np.abs(list2))
+    list1.insert(0, "With sound")
+    list2.insert(0, "Without sound")
+
+    mat = [p for p in zip(list1, list2)]
     create_csv(mat, name)
 
 

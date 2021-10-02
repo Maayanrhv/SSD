@@ -67,6 +67,8 @@ def plot_2d_gaussian(gh):
     gh.twoD_gaussian(gh.err_means_hor_back_without_sound, gh.err_means_ver_back_without_sound, 'WiaSL', 'Backward',
                      show_SL=True)
 
+    bbb = 5
+
 
 def plot_diff_histograms(gh, per_participant=True):
     # diff for homing task, horizontal error
@@ -215,7 +217,6 @@ def significance_errorbars_with_sem(gh):
     gh.significance_with_sem_graph(gh.err_means_ver_back_with_sound, gh.err_means_ver_back_without_sound)
 
 
-
 def paired_ttest_statistics_for_swaying(gh):
     # paired_ttest on the swaying errors.
     # homing task, roll error
@@ -254,6 +255,27 @@ def keep_data_in_file(gh):
                                                   'forward_vertical')
     DataKeeper.save_with_and_without_sound_to_csv(gh.err_means_ver_back_with_sound, gh.err_means_ver_back_without_sound,
                                                   'backward_vertical')
+
+    # 2 arrays - with and without sound - absolute values
+    DataKeeper.save_with_and_without_sound_to_csv_absolute_values(gh.err_means_hor_with_sound,
+                                                                  gh.err_means_hor_without_sound,
+                                                                  'homing_horizontal_absolute')
+    DataKeeper.save_with_and_without_sound_to_csv_absolute_values(gh.err_means_hor_for_with_sound,
+                                                                  gh.err_means_hor_for_without_sound,
+                                                                  'forward_horizontal_absolute')
+    DataKeeper.save_with_and_without_sound_to_csv_absolute_values(gh.err_means_hor_back_with_sound,
+                                                                  gh.err_means_hor_back_without_sound,
+                                                                  'backward_horizontal_absolute')
+    DataKeeper.save_with_and_without_sound_to_csv_absolute_values(gh.err_means_ver_with_sound,
+                                                                  gh.err_means_ver_without_sound,
+                                                                  'homing_vertical_absolute')
+    DataKeeper.save_with_and_without_sound_to_csv_absolute_values(gh.err_means_ver_for_with_sound,
+                                                                  gh.err_means_ver_for_without_sound,
+                                                                  'forward_vertical_absolute')
+    DataKeeper.save_with_and_without_sound_to_csv_absolute_values(gh.err_means_ver_back_with_sound,
+                                                                  gh.err_means_ver_back_without_sound,
+                                                                  'backward_vertical_absolute')
+
     # 1 array - the diff of without-with sound
     DataKeeper.save_diff_to_csv(gh.diffs_homing_horizontal, 'homing_horizontal')
     DataKeeper.save_diff_to_csv(gh.diffs_for_horizontal, 'forward_horizontal')
@@ -262,6 +284,13 @@ def keep_data_in_file(gh):
     DataKeeper.save_diff_to_csv(gh.diffs_for_vertical, 'forward_vertical')
     DataKeeper.save_diff_to_csv(gh.diffs_back_vertical, 'backward_vertical')
 
+    # 2 arrays - WiaSL backward in relation to new line
+    DataKeeper.save_with_and_without_sound_to_csv(gh.new_line_err_means_hor_back_with_sound,
+                                                  gh.new_line_err_means_hor_back_without_sound,
+                                                  'backward_horizontal_new_line')
+    DataKeeper.save_with_and_without_sound_to_csv(gh.new_line_err_means_ver_back_with_sound,
+                                                  gh.new_line_err_means_ver_back_without_sound,
+                                                  'backward_vertical_new_line')
 
     # Swaying errors
     DataKeeper.save_with_and_without_sound_to_csv(gh.sway_means_hom_roll_with_sound, gh.sway_means_hom_roll_without_sound,
@@ -278,6 +307,18 @@ def keep_data_in_file(gh):
                                                   'backward_yaw')
 
 
+def plot_2d_gaussian_for_new_line(gh):
+    # With sound only
+    # wiasl backward errors
+    gh.twoD_gaussian(gh.new_line_err_means_hor_back_with_sound, gh.new_line_err_means_ver_back_with_sound,
+                     'WiaSL', 'Backward', show_SL=True)
+
+    # Without sound only
+    # wiasl backward errors
+    gh.twoD_gaussian(gh.new_line_err_means_hor_back_without_sound, gh.new_line_err_means_ver_back_without_sound,
+                     'WiaSL', 'Backward', show_SL=True)
+
+
 def main():
     loader = Loader.Loader()  # load, read and clean all data
     gh = GraphHandler.GraphHandler(loader.participants, take_half_trials=False)  # create a graph handler to plot graphs
@@ -286,7 +327,7 @@ def main():
     # plot_histograms(gh)
 
     # Plot 2D-Gaussian Distribution
-    # plot_2d_gaussian(gh)
+    plot_2d_gaussian(gh)
 
     # Plot diff histograms
     # plot_diff_histograms(gh, per_participant=True)
@@ -308,7 +349,10 @@ def main():
     # keep_data_in_file(gh)
 
     # Plot errorbars graphs for significant results
-    significance_errorbars_with_sem(gh)
+    # significance_errorbars_with_sem(gh)
+
+    # Plot 2D-Gaussian distribution for new line (in WiaSL-backward task)
+    plot_2d_gaussian_for_new_line(gh)
 
 
 if __name__ == "__main__":

@@ -97,6 +97,14 @@ class GraphHandler:
         self.diffs_back_horizontal = []
         self.diffs_back_vertical = []
 
+        # WiaSL Backward errors in relation to the new line
+        # With sound only
+        self.new_line_err_means_hor_back_with_sound = []
+        self.new_line_err_means_ver_back_with_sound = []
+        # Without sound only
+        self.new_line_err_means_hor_back_without_sound = []
+        self.new_line_err_means_ver_back_without_sound = []
+
         # both with and without sound
         # self.set_mean_errors()
 
@@ -105,6 +113,8 @@ class GraphHandler:
         # self.set_mean_errors_with_and_without_sound_for_half_the_trials(take_half_trials)
 
         self.set_diffs()
+
+        self.set_mean_errors_with_and_without_sound_for_new_line()
 
         self.set_all_err_to_cm()
 
@@ -159,6 +169,14 @@ class GraphHandler:
         self.diffs_for_vertical = self.mm_to_cm(self.diffs_for_vertical)
         self.diffs_back_horizontal = self.mm_to_cm(self.diffs_back_horizontal)
         self.diffs_back_vertical = self.mm_to_cm(self.diffs_back_vertical)
+
+        # WiaSL Backward errors in relation to the new line
+        # With sound only
+        self.new_line_err_means_hor_back_with_sound = self.mm_to_cm(self.new_line_err_means_hor_back_with_sound)
+        self.new_line_err_means_ver_back_with_sound = self.mm_to_cm(self.new_line_err_means_ver_back_with_sound)
+        # Without sound only
+        self.new_line_err_means_hor_back_without_sound = self.mm_to_cm(self.new_line_err_means_hor_back_without_sound)
+        self.new_line_err_means_ver_back_without_sound = self.mm_to_cm(self.new_line_err_means_ver_back_without_sound)
 
     def mm_to_cm(self, x):
         return [val/10.0 for val in x]
@@ -419,7 +437,8 @@ class GraphHandler:
             if task_type == 'Forward':
                 ax.set_yticks(list(range(self.SL_LIMIT, ticks[1], ticks[2])))
             elif task_type == 'Backward':
-                ax.set_yticks(list(range(ticks[0], -1*self.SL_LIMIT+1, ticks[2])))
+                # ax.set_yticks(list(range(ticks[0], -1*self.SL_LIMIT+1, ticks[2])))
+                ax.set_yticks(list(range(self.SL_LIMIT - 150, ticks[1] - 100, ticks[2])))
         else:
             ax.set_yticks(list(range(ticks[0], ticks[1], ticks[2])))
 
@@ -655,7 +674,7 @@ class GraphHandler:
                     velocities_list = participant.roll_velocities_hom[i]
                     if velocities_list:
                         if participant.with_sound_indexes_flag[i] == 1:
-                            swaying = np.std(velocities_list)
+                            swaying = np.log10(np.std(velocities_list))
                             roll_stds_hom_with.append(swaying)
                 self.sway_means_hom_roll_with_sound.append(np.mean(roll_stds_hom_with))
             # wiasl - forward
@@ -665,7 +684,7 @@ class GraphHandler:
                     velocities_list = participant.roll_velocities_for[i]
                     if velocities_list:
                         if participant.with_sound_indexes_flag[i] == 1:
-                            swaying = np.std(velocities_list)
+                            swaying = np.log10(np.std(velocities_list))
                             roll_stds_for_with.append(swaying)
                 self.sway_means_for_roll_with_sound.append(np.mean(roll_stds_for_with))
             # wiasl - backward
@@ -675,7 +694,7 @@ class GraphHandler:
                     velocities_list = participant.roll_velocities_back[i]
                     if velocities_list:
                         if participant.with_sound_indexes_flag[i] == 1:
-                            swaying = np.std(velocities_list)
+                            swaying = np.log10(np.std(velocities_list))
                             roll_stds_back_with.append(swaying)
                 self.sway_means_back_roll_with_sound.append(np.mean(roll_stds_back_with))
             # Without sound
@@ -686,7 +705,7 @@ class GraphHandler:
                     velocities_list = participant.roll_velocities_hom[i]
                     if velocities_list:
                         if participant.with_sound_indexes_flag[i] == 0:
-                            swaying = np.std(velocities_list)
+                            swaying = np.log10(np.std(velocities_list))
                             roll_stds_hom_without.append(swaying)
                 self.sway_means_hom_roll_without_sound.append(np.mean(roll_stds_hom_without))
             # wiasl - forward
@@ -696,7 +715,7 @@ class GraphHandler:
                     velocities_list = participant.roll_velocities_for[i]
                     if velocities_list:
                         if participant.with_sound_indexes_flag[i] == 0:
-                            swaying = np.std(velocities_list)
+                            swaying = np.log10(np.std(velocities_list))
                             roll_stds_for_without.append(swaying)
                 self.sway_means_for_roll_without_sound.append(np.mean(roll_stds_for_without))
             # wiasl - backward
@@ -706,7 +725,7 @@ class GraphHandler:
                     velocities_list = participant.roll_velocities_back[i]
                     if velocities_list:
                         if participant.with_sound_indexes_flag[i] == 0:
-                            swaying = np.std(velocities_list)
+                            swaying = np.log10(np.std(velocities_list))
                             roll_stds_back_without.append(swaying)
                 self.sway_means_back_roll_without_sound.append(np.mean(roll_stds_back_without))
 
@@ -720,7 +739,7 @@ class GraphHandler:
                     velocities_list = participant.yaw_velocities_hom[i]
                     if velocities_list:
                         if participant.with_sound_indexes_flag[i] == 1:
-                            swaying = np.std(velocities_list)
+                            swaying = np.log10(np.std(velocities_list))
                             yaw_stds_hom_with.append(swaying)
                 self.sway_means_hom_yaw_with_sound.append(np.mean(yaw_stds_hom_with))
             # wiasl - forward
@@ -730,7 +749,7 @@ class GraphHandler:
                     velocities_list = participant.yaw_velocities_for[i]
                     if velocities_list:
                         if participant.with_sound_indexes_flag[i] == 1:
-                            swaying = np.std(velocities_list)
+                            swaying = np.log10(np.std(velocities_list))
                             yaw_stds_for_with.append(swaying)
                 self.sway_means_for_yaw_with_sound.append(np.mean(yaw_stds_for_with))
             # wiasl - backward
@@ -740,7 +759,7 @@ class GraphHandler:
                     velocities_list = participant.yaw_velocities_back[i]
                     if velocities_list:
                         if participant.with_sound_indexes_flag[i] == 1:
-                            swaying = np.std(velocities_list)
+                            swaying = np.log10(np.std(velocities_list))
                             yaw_stds_back_with.append(swaying)
                 self.sway_means_back_yaw_with_sound.append(np.mean(yaw_stds_back_with))
             # Without sound
@@ -751,7 +770,7 @@ class GraphHandler:
                     velocities_list = participant.yaw_velocities_hom[i]
                     if velocities_list:
                         if participant.with_sound_indexes_flag[i] == 0:
-                            swaying = np.std(velocities_list)
+                            swaying = np.log10(np.std(velocities_list))
                             yaw_stds_hom_without.append(swaying)
                 self.sway_means_hom_yaw_without_sound.append(np.mean(yaw_stds_hom_without))
             # wiasl - forward
@@ -761,7 +780,7 @@ class GraphHandler:
                     velocities_list = participant.yaw_velocities_for[i]
                     if velocities_list:
                         if participant.with_sound_indexes_flag[i] == 0:
-                            swaying = np.std(velocities_list)
+                            swaying = np.log10(np.std(velocities_list))
                             yaw_stds_for_without.append(swaying)
                 self.sway_means_for_yaw_without_sound.append(np.mean(yaw_stds_for_without))
             # wiasl - backward
@@ -771,7 +790,7 @@ class GraphHandler:
                     velocities_list = participant.yaw_velocities_back[i]
                     if velocities_list:
                         if participant.with_sound_indexes_flag[i] == 0:
-                            swaying = np.std(velocities_list)
+                            swaying = np.log10(np.std(velocities_list))
                             yaw_stds_back_without.append(swaying)
                 self.sway_means_back_yaw_without_sound.append(np.mean(yaw_stds_back_without))
 
@@ -790,3 +809,24 @@ class GraphHandler:
         ax.set_xlim([0, 6])
         ax.set_xticklabels([])
         plt.show()
+
+    def set_mean_errors_with_and_without_sound_for_new_line(self):
+        # multiply forward errors by -1
+        # with sound
+        opp_for_hor_with_sound = [-1 * val for val in self.err_means_hor_for_with_sound]
+        opp_for_ver_with_sound = [-1 * val for val in self.err_means_ver_for_with_sound]
+        # without sound
+        opp_for_hor_without_sound = [-1 * val for val in self.err_means_hor_for_without_sound]
+        opp_for_ver_without_sound = [-1 * val for val in self.err_means_ver_for_without_sound]
+
+        # calculate the backward errors in relation to the new line
+        # with sound
+        self.new_line_err_means_hor_back_with_sound = [back_val - for_val for back_val, for_val in
+                                                       zip(self.err_means_hor_back_with_sound, opp_for_hor_with_sound)]
+        self.new_line_err_means_ver_back_with_sound = [back_val - for_val for back_val, for_val in
+                                                       zip(self.err_means_ver_back_with_sound, opp_for_ver_with_sound)]
+        # without sound
+        self.new_line_err_means_hor_back_without_sound = [back_val - for_val for back_val, for_val in
+                                                          zip(self.err_means_hor_back_without_sound, opp_for_hor_without_sound)]
+        self.new_line_err_means_ver_back_without_sound = [back_val - for_val for back_val, for_val in
+                                                          zip(self.err_means_ver_back_without_sound, opp_for_ver_without_sound)]
